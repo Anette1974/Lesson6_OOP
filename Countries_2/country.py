@@ -10,29 +10,61 @@
 
 #1d Ändra i metoden "print_info" så att den skriver ut arean också, men bara om arean inte är None.
 
+#1e Skapa en ny metod med namnet "add_language". Den ska lägga till ett av landets officiella språk.
+# (Sverige har bara ett, men Finland har två språk (svenska och finska) och Schweiz har fyra.)
+# För att kunna spara ett varierande antal behöver du använda en lista.
+
+
 class Country:
 
     def __init__(self, name, pop, area=None):
         self.__name = name
         self.__population = pop
         self.__area = area
+        self.languages = []
 
-# 1c, skriver alltid ut area
-#    def print_info(self):
-#        print(f"I {self.__name} bor det {self.__population} miljoner invånare och arean {self.__area} km²")
+    def set_languages(self, languages):
+        self.languages = languages
 
-#1d, skriver endast ut area om det inte är None
     def print_info(self):
-        area_str = f" och arean är {self.__area}km²." if self.__area is not None else "."
-        print(f"I {self.__name} bor det {self.__population} miljoner invånare"+area_str)
 
+        # bygger ihop det som ska skrivas ut som en sträng, s
+        s = f" * I {self.__name} bor det {self.__population} miljoner invånare"
+
+        # 1d, skriver endast ut area om det inte är None
+        if self.__area:
+            s += f" med en area på {self.__area} km²"
+        print(s)
+
+        s = ""
+        if len(self.languages) <1:
+            s = f"   - Det finns inga språk inlagda"
+        elif len(self.languages) == 1:
+            s = f"   - Det officiella språket är {self.languages[0]} "
+        else:
+            s = self.custom_join_languages()
+        print(s)
+
+    def custom_join_languages(self):
+        languages = self.languages
+        initial_text = "    - De officiella språken är "
+        all_except_last_language = ", ".join(languages[:-1]) #join with comma, last language excluded
+        last_language = " och " +languages[-1] # last language is prefixed with "och"
+        return initial_text + all_except_last_language + last_language
 
 se = Country("Sverige", 10.5, 450295)
 no = Country("Norge", 5.5)
-ic = Country("Island", 0.38, 103000)
 dk = Country("Danmark", 6.0)
+ic = Country("Island", 0.38, 103000)
+fi = Country("Finland", 5.59, 338462)
+
+
+se.set_languages(["svenska", "rövarspråket", "svengelska", "python"])
+dk.set_languages(["Danska", "x", "y", "z"])
+fi.set_languages(["svenska", "finska"])
 
 se.print_info()
 no.print_info()
-ic.print_info()
 dk.print_info()
+ic.print_info()
+fi.print_info()
